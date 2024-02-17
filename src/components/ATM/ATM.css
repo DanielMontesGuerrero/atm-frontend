@@ -1,0 +1,11 @@
+.atm {
+  height: 100vh;
+  margin: 0 22%;
+  background-color: #F1F0E7;
+}
+
+.sticker-logo img {
+  position: relative;
+  top: -7vh;
+  width: 30vw;
+}
