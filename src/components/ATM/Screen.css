@@ -1,13 +1,13 @@
 .atm-interface {
   display: flex;
   flex-direction: column;
-  height: 60vh;
+  height: 70vh;
   font-family: 'Lower Pixel', sans-serif;
 }
 
 .atm-interface-output {
   display: flex;
-  flex: 6;
+  flex: 5;
 }
 
 .atm-interface-output-message {
@@ -36,7 +36,7 @@
 
 .buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   flex: 1;
   justify-content: space-around;
   gap: 10px;
@@ -56,9 +56,10 @@
 
 .button-labels {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: space-around;
   gap: 10px;
+  width: 100%;
 }
 
 .right-buttons .atm-button {
@@ -101,7 +102,15 @@
 
 .atm-button-label {
   display: flex;
+  flex: 1;
   font-size: x-large;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.atm-button-label p {
+  margin-block-start: 0px;
+  margin-block-end: 0px;
 }
 
 .atm-button-label div {
