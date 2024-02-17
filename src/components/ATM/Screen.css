@@ -1,0 +1,136 @@
+.atm-interface {
+  display: flex;
+  flex-direction: column;
+  height: 60vh;
+  font-family: 'Lower Pixel', sans-serif;
+}
+
+.atm-interface-output {
+  display: flex;
+  flex: 6;
+}
+
+.atm-interface-output-message {
+  flex: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
+  background-color: #7EB4D5;
+  border-top: 10px solid #E1E1D6;
+  border-left: 10px solid #E1E1D6;
+  border-right: 10px solid #E1E1D6;
+}
+
+.atm-interface-input {
+  display: flex;
+  justify-content: space-between;
+  flex: 8;
+}
+
+.atm-interface-footer {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-around;
+  gap: 10px;
+  border-bottom: 10px solid #00000000;
+}
+
+.display {
+  display: flex;
+  flex: 3;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #7EB4D5;
+  border-bottom: 10px solid #E1E1D6;
+  border-left: 10px solid #E1E1D6;
+  border-right: 10px solid #E1E1D6;
+}
+
+.button-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.right-buttons .atm-button {
+  flex-direction: row-reverse;
+}
+
+.atm-button {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.atm-button button {
+  background-color: #C1C1C1;
+  aspect-ratio: 3 / 2;
+  width: 50%;
+  border-radius: 10px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 5px solid #D9D9D4;
+  border-bottom: 5px solid #9B9B9B;
+}
+
+.atm-button button:hover {
+  cursor: pointer;
+}
+
+.atm-button button:active {
+  cursor: pointer;
+  background-color: #B1B1B1;
+}
+
+.atm-button div {
+  position: relative;
+  width: 10%;
+  height: 10%;
+  margin: auto 0;
+  background-color: #9B9B9B;
+}
+
+.atm-button-label {
+  display: flex;
+  font-size: x-large;
+}
+
+.atm-button-label div {
+  position: relative;
+  width: 10%;
+  height: 10%;
+  margin: auto 0;
+  background-color: #C1C1C1;
+}
+
+.left-labels .atm-button-label p {
+  margin-left: 10%;
+}
+
+.left-labels .atm-button-label {
+  flex-direction: row-reverse;
+}
+
+.right-labels .atm-button-label p {
+  margin-right: 10%;
+}
+
+.systems-logo {
+  margin-top: 5px;
+  flex: 3;
+  display: flex;
+  justify-content: end;
+}
+
+.systems-logo img {
+  height: 30%;
+}
