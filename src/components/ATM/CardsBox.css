@@ -1,0 +1,74 @@
+.cards {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  position: relative;
+  height: 8vh;
+}
+
+.cards img {
+  position: absolute;
+  height: 100%;
+}
+
+.icon-1 {
+  transform: translate(-50%, 25%);
+  clip-path: rect(0 17% 50% 0);
+}
+
+.icon-1-disabled {
+  transform: translate(-50%, -25%);
+  clip-path: rect(50% 17% 100% 0);
+}
+
+.icon-2 {
+  transform: translate(-50%, 25%);
+  clip-path: rect(0 33% 50% 17%);
+}
+
+.icon-2-disabled {
+  transform: translate(-50%, -25%);
+  clip-path: rect(50% 33% 100% 17%);
+}
+
+.icon-3 {
+  transform: translate(-50%, 25%);
+  clip-path: rect(0 50% 50% 32%);
+}
+
+.icon-3-disabled {
+  transform: translate(-50%, -25%);
+  clip-path: rect(50% 50% 100% 32%);
+}
+
+.icon-4 {
+  transform: translate(-50%, 25%);
+  clip-path: rect(0 67% 50% 50%);
+}
+
+.icon-4-disabled {
+  transform: translate(-50%, -25%);
+  clip-path: rect(50% 67% 100% 50%);
+}
+
+.icon-5 {
+  transform: translate(-50%, 25%);
+  clip-path: rect(0 84% 50% 67%);
+}
+
+.icon-5-disabled {
+  transform: translate(-50%, -25%);
+  clip-path: rect(50% 84% 100% 67%);
+}
+
+.icon-6 {
+  transform: translate(-50%, 25%);
+  clip-path: rect(0 100% 50% 84%);
+}
+
+.icon-6-disabled {
+  transform: translate(-50%, -25%);
+  clip-path: rect(50% 100% 100% 84%);
+}
