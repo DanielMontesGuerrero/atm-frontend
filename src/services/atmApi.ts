@@ -1,3 +1,4 @@
+import CardTypes from "../types/CardTypes";
 import User from "../types/User";
 
 export function validatePin(username: string, pin: string | undefined){
@@ -9,6 +10,7 @@ export function getUser(username: string): User {
     username: "Daniel",
     pin: "1234",
     balance: 500,
+    cardType: CardTypes.VISA,
   };
 }
 

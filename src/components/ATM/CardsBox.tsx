@@ -1,16 +1,19 @@
 import cards from '../../assets/creditcard_sprite.png';
+import CardTypes from '../../types/CardTypes';
 import './CardsBox.css';
 
-const CardsBox = () => {
+interface CardsBoxProps {
+  activeCard: CardTypes;
+}
+
+const CardsBox = ({activeCard}: CardsBoxProps) => {
   return (
     <div className="cards">
     <div className="container">
-      <img className="icon-1" src={cards} alt="cards icons"/>
-      <img className="icon-2" src={cards} alt="cards icons"/>
-      <img className="icon-3" src={cards} alt="cards icons"/>
-      <img className="icon-4" src={cards} alt="cards icons"/>
-      <img className="icon-5" src={cards} alt="cards icons"/>
-      <img className="icon-6" src={cards} alt="cards icons"/>
+      {[1, 2, 3, 4, 5, 6].map((val) => {
+        const cardType = val as CardTypes;
+        return <img key={val} className={activeCard === cardType ? `icon-${val}` : `icon-${val}-disabled`} src={cards} alt="cards icons"/>
+      })}
     </div>
     </div>
   );

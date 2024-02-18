@@ -6,6 +6,8 @@ import Actions from "../../utils/Actions";
 import {ATMOption} from "../../types/ATMAction";
 import User from "../../types/User";
 import {deposit, getUser, updatePin, validatePin, withdraw} from "../../services/atmApi";
+import CardsBox from "./CardsBox";
+import CardTypes from "../../types/CardTypes";
 
 interface ButtonProps {
   onClick?: () => void;
@@ -203,6 +205,7 @@ const Screen = () => {
 
   return (
     <div className="atm-interface">
+      <CardsBox activeCard={actionContext.user?.cardType ?? CardTypes.NONE}/>
       <div className="atm-interface-output">
         <div style={{flex: 1}}></div>
         <div className="atm-interface-output-message">

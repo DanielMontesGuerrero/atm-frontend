@@ -15,12 +15,12 @@
 
 .icon-1 {
   transform: translate(-50%, 25%);
-  clip-path: rect(0 17% 50% 0);
+  clip-path: rect(0 16% 50% 0);
 }
 
 .icon-1-disabled {
   transform: translate(-50%, -25%);
-  clip-path: rect(50% 17% 100% 0);
+  clip-path: rect(50% 16% 100% 0);
 }
 
 .icon-2 {
@@ -35,22 +35,22 @@
 
 .icon-3 {
   transform: translate(-50%, 25%);
-  clip-path: rect(0 50% 50% 32%);
+  clip-path: rect(0 51% 50% 34%);
 }
 
 .icon-3-disabled {
   transform: translate(-50%, -25%);
-  clip-path: rect(50% 50% 100% 32%);
+  clip-path: rect(50% 51% 100% 34%);
 }
 
 .icon-4 {
   transform: translate(-50%, 25%);
-  clip-path: rect(0 67% 50% 50%);
+  clip-path: rect(0 67% 50% 52%);
 }
 
 .icon-4-disabled {
   transform: translate(-50%, -25%);
-  clip-path: rect(50% 67% 100% 50%);
+  clip-path: rect(50% 67% 100% 52%);
 }
 
 .icon-5 {
