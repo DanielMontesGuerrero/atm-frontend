@@ -21,18 +21,18 @@
     "username": "Kevin",
     "pin": "1234",
     "balance": 1200,
-    "cardType": 5
+    "cardType": 4
   },
   {
     "username": "Jorge",
     "pin": "1234",
     "balance": 6700,
-    "cardType": 6
+    "cardType": 5
   },
   {
     "username": "Sebastian",
     "pin": "1234",
     "balance": 520,
-    "cardType": 7
+    "cardType": 6
   }
 ]

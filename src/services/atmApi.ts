@@ -1,96 +1,175 @@
 import User from "../types/User";
 import rawUsers from "./users.json";
 
-const Users = new Map<string, User>();
+interface ApiResult<T> {
+  status: number;
+  data: T;
+}
 
 function loadUsers() {
+  const users = new Map<string, User>();
   rawUsers.forEach((user) => {
-    Users.set(user.username, user);
+    users.set(user.username, user);
   });
+  return users;
+}
+
+export function getUser(username: string): ApiResult<{ user: User | null }> {
+  let rawUser = localStorage.getItem(username);
+  if (rawUser === null) {
+    const defaultUsers = loadUsers();
+    if (!defaultUsers.has(username)) {
+      return {
+        status: 404,
+        data: {
+          user: null,
+        },
+      };
+    }
+    rawUser = JSON.stringify(defaultUsers.get(username));
+  }
+  return {
+    status: 200,
+    data: {
+      user: JSON.parse(rawUser),
+    },
+  };
 }
 
 export function validatePin(
   username: string,
   pin: string | undefined,
-): boolean {
-  if (Users.size === 0) {
-    loadUsers();
+): ApiResult<{ isValidPin: boolean }> {
+  if (pin === undefined) {
+    return {
+      status: 200,
+      data: {
+        isValidPin: true,
+      },
+    };
   }
-  if (Users.has(username)) {
-    const user = Users.get(username);
-    return user?.pin === pin;
+  const userResult = getUser(username);
+  if (userResult.status !== 200 || userResult.data.user === null) {
+    return {
+      status: 404,
+      data: {
+        isValidPin: false,
+      },
+    };
   }
-  return false;
+  return {
+    status: 200,
+    data: {
+      isValidPin: userResult.data.user.pin === pin,
+    },
+  };
 }
 
-export function getUser(username: string): User | undefined {
-  if (Users.size === 0) {
-    loadUsers();
+export function withdraw(
+  user: User | undefined | null,
+  amount: number,
+): ApiResult<{ resultMessage: string }> {
+  if (user === undefined || user === null) {
+    return {
+      status: 400,
+      data: {
+        resultMessage: "Invalid user, try again",
+      },
+    };
   }
-  return Users.get(username);
+  const { status, data } = getUser(user.username);
+  if (status !== 200 || data.user === null) {
+    return {
+      status: 404,
+      data: {
+        resultMessage: "User doesn't exist",
+      },
+    };
+  }
+  if (data.user.balance < amount) {
+    return {
+      status: 200,
+      data: {
+        resultMessage: "You don't have sufficient funds",
+      },
+    };
+  }
+  data.user.balance -= amount;
+  localStorage.setItem(data.user.username, JSON.stringify(data.user));
+  return {
+    status: 200,
+    data: {
+      resultMessage: "Take your cash, thank you!",
+    },
+  };
 }
 
-export function withdraw(user: User | undefined, amount: number) {
-  if (Users.size === 0) {
-    loadUsers();
+export function deposit(
+  user: User | undefined | null,
+  amount: number,
+): ApiResult<{ resultMessage: string }> {
+  if (user === undefined || user === null) {
+    return {
+      status: 400,
+      data: {
+        resultMessage: "Invalid user, try again",
+      },
+    };
   }
-  if (user === undefined) {
-    return "Invalid User, try again";
+  const { status, data } = getUser(user.username);
+  if (status !== 200 || data.user === null) {
+    return {
+      status: 400,
+      data: {
+        resultMessage: "Users doesn't exist",
+      },
+    };
   }
-  const dbUser = Users.get(user?.username);
-  if (dbUser === undefined) {
-    return "User doensn't exist";
-  }
-  if (dbUser.balance < amount) {
-    return "You don't have sufficient funds";
-  }
-  dbUser.balance -= amount;
-  return "Take your cash, thank you!";
+  data.user.balance += amount;
+  localStorage.setItem(data.user.username, JSON.stringify(data.user));
+  return {
+    status: 200,
+    data: {
+      resultMessage: "Thank you, your balance will reflect shortly",
+    },
+  };
 }
 
-export function getBalance(user: User | undefined) {
-  if (Users.size === 0) {
-    loadUsers();
+export function updatePin(
+  user: User | undefined | null,
+  newPin: string | undefined,
+) {
+  if (user === undefined || user === null) {
+    return {
+      status: 400,
+      data: {
+        resultMessage: "Invalid user, try again",
+      },
+    };
   }
-  if (user === undefined) {
-    return "Invalid User, try again";
+  if (newPin === undefined || newPin.length !== 4) {
+    return {
+      status: 400,
+      data: {
+        resultMessage: "Invalid PIN, try again",
+      },
+    };
   }
-  const dbUser = Users.get(user?.username);
-  if (dbUser === undefined) {
-    return "User doensn't exist";
+  const { status, data } = getUser(user.username);
+  if (status !== 200 || data.user === null) {
+    return {
+      status: 400,
+      data: {
+        resultMessage: "Users doesn't exist",
+      },
+    };
   }
-  return Users.get(user.username)?.balance;
-}
-
-export function deposit(user: User | undefined, amount: number) {
-  if (Users.size === 0) {
-    loadUsers();
-  }
-  if (user === undefined) {
-    return "Invalid User, try again";
-  }
-  const dbUser = Users.get(user?.username);
-  if (dbUser === undefined) {
-    return "User doensn't exist";
-  }
-  dbUser.balance += amount;
-  return "Thank you, your balance will reflect shortly";
-}
-
-export function updatePin(user: User | undefined, newPin: string | undefined) {
-  if (Users.size === 0) {
-    loadUsers();
-  }
-  if (user === undefined) {
-    return "Invalid User, try again";
-  }
-  const dbUser = Users.get(user?.username);
-  if (dbUser === undefined) {
-    return "User doensn't exist";
-  }
-  if (newPin === undefined || newPin?.length !== 4) {
-    return "Your PIN must have 4 digits";
-  }
-  dbUser.pin = newPin;
-  return "Your PIN was updated, thank you!";
+  data.user.pin = newPin;
+  localStorage.setItem(data.user.username, JSON.stringify(data.user));
+  return {
+    status: 200,
+    data: {
+      resultMessage: "Your PIN was updated, thank you!",
+    },
+  };
 }

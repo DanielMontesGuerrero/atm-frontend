@@ -52,7 +52,7 @@ const ButtonScreenText = ({ message }: ButtonScreenTextProps) => {
 
 interface IActionContext {
   pin?: string;
-  user?: User;
+  user?: User | null;
   message?: string;
   amount?: string;
 }
@@ -65,6 +65,8 @@ function getContextFromAtmOption(
       return {
         pin: "",
       };
+    case ATMActionNames.WELCOME:
+      return {};
     default:
       return null;
   }
@@ -144,8 +146,8 @@ const Screen = ({ selectedUser }: ScreenProps) => {
         break;
       case "validate-pin":
         if (validatePin(selectedUser, actionContext.pin)) {
-          const user = getUser(selectedUser);
-          setActionContext({ user, amount: "", pin: "" });
+          const { data } = getUser(selectedUser);
+          setActionContext({ user: data.user, amount: "", pin: "" });
           setAtmOption(atmAction.nextAtmOption);
         } else {
           setActionContext({
@@ -157,8 +159,8 @@ const Screen = ({ selectedUser }: ScreenProps) => {
       case "withdraw":
         if (actionContext.amount !== undefined) {
           const amount = parseInt(actionContext.amount);
-          const result = withdraw(actionContext.user, amount);
-          setActionContext({ message: result });
+          const { data } = withdraw(actionContext.user, amount);
+          setActionContext({ message: data.resultMessage });
           setAtmOption(atmAction.nextAtmOption);
         } else {
           setActionContext({ message: "Invalid amount, try again" });
@@ -168,8 +170,8 @@ const Screen = ({ selectedUser }: ScreenProps) => {
       case "deposit":
         if (actionContext.amount !== undefined) {
           const amount = parseInt(actionContext.amount);
-          const result = deposit(actionContext.user, amount);
-          setActionContext({ message: result });
+          const { data } = deposit(actionContext.user, amount);
+          setActionContext({ message: data.resultMessage });
           setAtmOption(atmAction.nextAtmOption);
         } else {
           setActionContext({ message: "Invalid amount, try again" });
@@ -177,8 +179,8 @@ const Screen = ({ selectedUser }: ScreenProps) => {
         }
         break;
       case "update-pin":
-        const result = updatePin(actionContext.user, actionContext.pin);
-        setActionContext({ message: result });
+        const { data } = updatePin(actionContext.user, actionContext.pin);
+        setActionContext({ message: data.resultMessage });
         setAtmOption(atmAction.nextAtmOption);
         break;
       default:
