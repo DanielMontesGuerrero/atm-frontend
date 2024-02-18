@@ -5,7 +5,7 @@ import ATMActionNames from "../../types/ATMActionNames";
 import Actions from "../../utils/Actions";
 import {ATMOption} from "../../types/ATMAction";
 import User from "../../types/User";
-import {getUser, validatePin} from "../../services/atmApi";
+import {deposit, getUser, updatePin, validatePin, withdraw} from "../../services/atmApi";
 
 interface ButtonProps {
   onClick?: () => void;
@@ -40,12 +40,14 @@ const ButtonScreenText = ({message}: ButtonScreenTextProps) => {
 interface IActionContext {
   pin?: string;
   user?: User;
-  errorMessage?: string;
+  message?: string;
+  amount?: string;
 }
 
 function getContextFromAtmOption(atmOption: ATMActionNames): IActionContext | null{
   switch(atmOption){
     case ATMActionNames.ENTER_PIN:
+    case ATMActionNames.RE_ENTER_PIN:
       return {
         pin: '',
     };
@@ -66,7 +68,8 @@ const Screen = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if('0' <= event.key && event.key <= '9'){
+      console.log(event.key);
+      if(('0' <= event.key && event.key <= '9') || event.key === "Backspace"){
         dispatchKeyDown(event.key);
       }
     };
@@ -79,12 +82,37 @@ const Screen = () => {
   const dispatchKeyDown = (key: string) => {
     switch(atmOption) {
       case ATMActionNames.ENTER_PIN:
-        if (actionContext.pin !== undefined && actionContext.pin.length < 4) {
-          console.log(actionContext.pin);
-          setActionContext({
-            ...actionContext,
-            pin: actionContext.pin + key,
-          });
+      case ATMActionNames.RE_ENTER_PIN:
+        if (actionContext.pin !== undefined) {
+          if(key === "Backspace") {
+            setActionContext({
+              ...actionContext,
+              pin: actionContext.pin.slice(0, -1),
+            });
+          }
+          else if(actionContext.pin.length < 4){
+            setActionContext({
+              ...actionContext,
+              pin: actionContext.pin + key,
+            });
+          }
+        }
+        break;
+      case ATMActionNames.WITHDRAW:
+      case ATMActionNames.DEPOSIT:
+        if (actionContext.amount !== undefined) {
+          if(key === "Backspace") {
+            setActionContext({
+              ...actionContext,
+              amount: actionContext.amount.slice(0, -1),
+            });
+          }
+          else if(actionContext.amount.length < 10){
+            setActionContext({
+              ...actionContext,
+              amount: actionContext.amount + key,
+            });
+          }
         }
         break;
       default:
@@ -100,15 +128,44 @@ const Screen = () => {
       case 'validate-pin':
         if(validatePin("", actionContext.pin)){
           const user = getUser("");
-          setActionContext({user});
+          setActionContext({user, amount: ""});
           setAtmOption(atmAction.nextAtmOption);
         }
         else{
           setActionContext({
-            errorMessage: 'Invalid PIN, try again',
+            message: 'Invalid PIN, try again',
           })
-          setAtmOption(ATMActionNames.ERROR);
+          setAtmOption(ATMActionNames.MESSAGE);
         }
+        break;
+      case 'withdraw':
+        if(actionContext.amount !== undefined){
+          const amount = parseInt(actionContext.amount);
+          const result = withdraw(actionContext.user, amount);
+          setActionContext({message: result});
+          setAtmOption(atmAction.nextAtmOption);
+        }
+        else{
+          setActionContext({message: "Invalid amount, try again"});
+          setAtmOption(ATMActionNames.MESSAGE);
+        }
+        break;
+      case 'deposit':
+        if(actionContext.amount !== undefined){
+          const amount = parseInt(actionContext.amount);
+          const result = deposit(actionContext.user, amount);
+          setActionContext({message: result});
+          setAtmOption(atmAction.nextAtmOption);
+        }
+        else{
+          setActionContext({message: "Invalid amount, try again"});
+          setAtmOption(atmAction.nextAtmOption);
+        }
+        break;
+      case 'update-pin':
+        const result = updatePin(actionContext.user, actionContext.pin);
+        setActionContext({message: result});
+        setAtmOption(atmAction.nextAtmOption);
         break;
       default: break;
     }

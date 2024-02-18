@@ -13,8 +13,8 @@ const Actions = new Map<ATMActionNames,ATMAction>([
       },
     ],
   }],
-  [ATMActionNames.ERROR, {
-    message: ({errorMessage}) => errorMessage,
+  [ATMActionNames.MESSAGE, {
+    message: ({message}) => message,
     leftOptions: [],
     rightOptions: [
       {
@@ -46,29 +46,88 @@ const Actions = new Map<ATMActionNames,ATMAction>([
       {
         name: 'Deposit',
         nextAtmOption: ATMActionNames.DEPOSIT,
-        action: '',
+        action: 'go-next-action',
       },
       {
         name: 'Withdraw',
         nextAtmOption: ATMActionNames.WITHDRAW,
-        action: '',
+        action: 'go-next-action',
       }
     ],
     rightOptions: [
       {
         name: 'Re-Enter PIN',
         nextAtmOption: ATMActionNames.RE_ENTER_PIN,
-        action: '',
+        action: 'go-next-action',
       },
       {
         name: 'Balance',
         nextAtmOption: ATMActionNames.BALANCE,
-        action: '',
+        action: 'go-next-action',
       },
       {
         name: 'Exit',
         nextAtmOption: ATMActionNames.WELCOME,
-        action: '',
+        action: 'go-next-action',
+      },
+    ],
+  }],
+  [ATMActionNames.WITHDRAW, {
+    message: ({amount}) => `Enter the amount: $${amount ?? 0}`,
+    leftOptions: [],
+    rightOptions: [
+      {
+        name: 'OK',
+        nextAtmOption: ATMActionNames.MESSAGE,
+        action: 'withdraw',
+      },
+      {
+        name: 'Cancel',
+        nextAtmOption: ATMActionNames.WELCOME,
+        action: 'go-next-action',
+      },
+    ],
+  }],
+  [ATMActionNames.DEPOSIT, {
+    message: ({amount}) => `Enter the amount: $${amount ?? 0}`,
+    leftOptions: [],
+    rightOptions: [
+      {
+        name: 'OK',
+        nextAtmOption: ATMActionNames.MESSAGE,
+        action: 'deposit',
+      },
+      {
+        name: 'Cancel',
+        nextAtmOption: ATMActionNames.WELCOME,
+        action: 'go-next-action',
+      },
+    ],
+  }],
+  [ATMActionNames.BALANCE, {
+    message: ({user}) => `Your current balance is: $${user?.balance ?? 0}`,
+    leftOptions: [],
+    rightOptions: [
+      {
+        name: 'OK',
+        nextAtmOption: ATMActionNames.WELCOME,
+        action: 'go-next-action',
+      },
+    ],
+  }],
+  [ATMActionNames.RE_ENTER_PIN, {
+    message: ({pin}) => `Enter your new PIN: ${'*'.repeat(pin?.length ?? 0)}`,
+    leftOptions: [],
+    rightOptions: [
+      {
+        name: 'Save',
+        nextAtmOption: ATMActionNames.MESSAGE,
+        action: 'update-pin',
+      },
+      {
+        name: 'Cancel',
+        nextAtmOption: ATMActionNames.WELCOME,
+        action: 'go-next-action',
       },
     ],
   }],

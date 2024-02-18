@@ -7,7 +7,7 @@ enum ATMActionNames {
   BALANCE,
   RE_ENTER_PIN,
   INPUT,
-  ERROR,
+  MESSAGE,
 }
 
 export default ATMActionNames;
