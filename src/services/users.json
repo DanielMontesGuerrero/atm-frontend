@@ -1,0 +1,38 @@
+[
+  {
+    "username": "Daniel",
+    "pin": "1234",
+    "balance": 100,
+    "cardType": 1
+  },
+  {
+    "username": "Esteban",
+    "pin": "1234",
+    "balance": 500,
+    "cardType": 2
+  },
+  {
+    "username": "Gabriel",
+    "pin": "1234",
+    "balance": 1000,
+    "cardType": 3
+  },
+  {
+    "username": "Kevin",
+    "pin": "1234",
+    "balance": 1200,
+    "cardType": 5
+  },
+  {
+    "username": "Jorge",
+    "pin": "1234",
+    "balance": 6700,
+    "cardType": 6
+  },
+  {
+    "username": "Sebastian",
+    "pin": "1234",
+    "balance": 520,
+    "cardType": 7
+  }
+]

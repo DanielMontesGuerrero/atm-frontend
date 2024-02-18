@@ -56,7 +56,6 @@ interface IActionContext {
 function getContextFromAtmOption(atmOption: ATMActionNames): IActionContext | null{
   switch(atmOption){
     case ATMActionNames.ENTER_PIN:
-    case ATMActionNames.RE_ENTER_PIN:
       return {
         pin: '',
     };
@@ -82,7 +81,6 @@ const Screen = ({selectedUser}: ScreenProps) => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log(event.key);
       if(('0' <= event.key && event.key <= '9') || event.key === "Backspace"){
         playBeep();
         dispatchKeyDown(event.key);
@@ -143,7 +141,7 @@ const Screen = ({selectedUser}: ScreenProps) => {
       case 'validate-pin':
         if(validatePin(selectedUser, actionContext.pin)){
           const user = getUser(selectedUser);
-          setActionContext({user, amount: ""});
+          setActionContext({user, amount: "", pin: ""});
           setAtmOption(atmAction.nextAtmOption);
         }
         else{
