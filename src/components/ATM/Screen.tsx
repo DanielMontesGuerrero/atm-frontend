@@ -8,15 +8,22 @@ import User from "../../types/User";
 import {deposit, getUser, updatePin, validatePin, withdraw} from "../../services/atmApi";
 import CardsBox from "./CardsBox";
 import CardTypes from "../../types/CardTypes";
+import useSound from "use-sound";
+import beep from "../../assets/beep.mp3";
 
 interface ButtonProps {
   onClick?: () => void;
 }
 
 const Button = ({onClick}: ButtonProps) => {
+  const [playBeep] = useSound(beep);
+
   return (
     <div className="atm-button">
-      <button onClick={onClick}/>
+      <button onClick={() => {
+        onClick?.();
+        playBeep();
+      }}/>
       <div/>
     </div>
   );
@@ -57,10 +64,15 @@ function getContextFromAtmOption(atmOption: ATMActionNames): IActionContext | nu
   }
 }
 
-const Screen = () => {
+interface ScreenProps {
+  selectedUser: string;
+}
+
+const Screen = ({selectedUser}: ScreenProps) => {
   const [atmOption, setAtmOption] = useState(ATMActionNames.WELCOME);
   const [actionContext, setActionContext] = useState<IActionContext>({});
   const atmOptionData = Actions.get(atmOption);
+  const [playBeep] = useSound(beep);
 
   useEffect(() => {
     const ctx = getContextFromAtmOption(atmOption);
@@ -72,6 +84,7 @@ const Screen = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       console.log(event.key);
       if(('0' <= event.key && event.key <= '9') || event.key === "Backspace"){
+        playBeep();
         dispatchKeyDown(event.key);
       }
     };
@@ -128,8 +141,8 @@ const Screen = () => {
         setAtmOption(atmAction.nextAtmOption);
         break;
       case 'validate-pin':
-        if(validatePin("", actionContext.pin)){
-          const user = getUser("");
+        if(validatePin(selectedUser, actionContext.pin)){
+          const user = getUser(selectedUser);
           setActionContext({user, amount: ""});
           setAtmOption(atmAction.nextAtmOption);
         }

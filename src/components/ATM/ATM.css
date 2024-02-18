@@ -9,3 +9,11 @@
   top: -7vh;
   width: 30vw;
 }
+
+.user-selector {
+  position: sticky;
+  bottom: 0;
+  font-size: large;
+  background-color: black;
+  color: white;
+}
