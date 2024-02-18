@@ -1,6 +1,6 @@
-import atm from '../../assets/atm_sign.png';
-import graffiti from '../../assets/graffiti.png';
-import './Banner.css';
+import atm from "../../assets/atm_sign.png";
+import graffiti from "../../assets/graffiti.png";
+import "./Banner.css";
 
 const Banner = () => {
   return (

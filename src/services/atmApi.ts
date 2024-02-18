@@ -1,7 +1,7 @@
 import User from "../types/User";
 import rawUsers from "./users.json";
 
-const Users = new Map<string,User>();
+const Users = new Map<string, User>();
 
 function loadUsers() {
   rawUsers.forEach((user) => {
@@ -9,11 +9,14 @@ function loadUsers() {
   });
 }
 
-export function validatePin(username: string, pin: string | undefined): boolean {
-  if(Users.size === 0){
+export function validatePin(
+  username: string,
+  pin: string | undefined,
+): boolean {
+  if (Users.size === 0) {
     loadUsers();
   }
-  if(Users.has(username)){
+  if (Users.has(username)) {
     const user = Users.get(username);
     return user?.pin === pin;
   }
@@ -21,24 +24,24 @@ export function validatePin(username: string, pin: string | undefined): boolean 
 }
 
 export function getUser(username: string): User | undefined {
-  if(Users.size === 0){
+  if (Users.size === 0) {
     loadUsers();
   }
   return Users.get(username);
 }
 
 export function withdraw(user: User | undefined, amount: number) {
-  if(Users.size === 0){
+  if (Users.size === 0) {
     loadUsers();
   }
-  if(user === undefined){
+  if (user === undefined) {
     return "Invalid User, try again";
   }
   const dbUser = Users.get(user?.username);
-  if(dbUser === undefined){
+  if (dbUser === undefined) {
     return "User doensn't exist";
   }
-  if(dbUser.balance < amount){
+  if (dbUser.balance < amount) {
     return "You don't have sufficient funds";
   }
   dbUser.balance -= amount;
@@ -46,28 +49,28 @@ export function withdraw(user: User | undefined, amount: number) {
 }
 
 export function getBalance(user: User | undefined) {
-  if(Users.size === 0){
+  if (Users.size === 0) {
     loadUsers();
   }
-  if(user === undefined){
+  if (user === undefined) {
     return "Invalid User, try again";
   }
   const dbUser = Users.get(user?.username);
-  if(dbUser === undefined){
+  if (dbUser === undefined) {
     return "User doensn't exist";
   }
   return Users.get(user.username)?.balance;
 }
 
 export function deposit(user: User | undefined, amount: number) {
-  if(Users.size === 0){
+  if (Users.size === 0) {
     loadUsers();
   }
-  if(user === undefined){
+  if (user === undefined) {
     return "Invalid User, try again";
   }
   const dbUser = Users.get(user?.username);
-  if(dbUser === undefined){
+  if (dbUser === undefined) {
     return "User doensn't exist";
   }
   dbUser.balance += amount;
@@ -75,17 +78,17 @@ export function deposit(user: User | undefined, amount: number) {
 }
 
 export function updatePin(user: User | undefined, newPin: string | undefined) {
-  if(Users.size === 0){
+  if (Users.size === 0) {
     loadUsers();
   }
-  if(user === undefined){
+  if (user === undefined) {
     return "Invalid User, try again";
   }
   const dbUser = Users.get(user?.username);
-  if(dbUser === undefined){
+  if (dbUser === undefined) {
     return "User doensn't exist";
   }
-  if(newPin === undefined || newPin?.length !== 4){
+  if (newPin === undefined || newPin?.length !== 4) {
     return "Your PIN must have 4 digits";
   }
   dbUser.pin = newPin;

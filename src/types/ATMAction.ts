@@ -7,7 +7,7 @@ export interface ATMOption {
 }
 
 interface ATMAction {
-  message: ((args: any | undefined) => string);
+  message: (args: any | undefined) => string;
   leftOptions: ATMOption[];
   rightOptions: ATMOption[];
 }
